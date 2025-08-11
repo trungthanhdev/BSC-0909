@@ -1,0 +1,6 @@
+@BSC_0909.Controller_HostAddress = http://localhost:5076
+
+GET {{BSC_0909.Controller_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

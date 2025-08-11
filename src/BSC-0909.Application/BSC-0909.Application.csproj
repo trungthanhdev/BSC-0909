@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+ <ItemGroup>
+    <ProjectReference Include="..\BSC-0909.Domain\BSC-0909.Domain.csproj" />
+    <ProjectReference Include="..\BSC-0909.Infrastructure\BSC-0909.Infrastructure.csproj" />
+    <ProjectReference Include="..\BSC-0909.Contract\BSC-0909.Contract.csproj" />
+  </ItemGroup>
+
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace>BSC_0909.Application</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

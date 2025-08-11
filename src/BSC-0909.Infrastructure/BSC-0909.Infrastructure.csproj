@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+<ItemGroup>
+    <!-- <ProjectReference Include="..\CFS-1507.Application\CFS-1507.Application.csproj" /> -->
+    <ProjectReference Include="..\BSC-0909.Domain\BSC-0909.Domain.csproj" />
+  </ItemGroup>
+<ItemGroup>
+  <PackageReference Include="Binance.Net" Version="11.4.0" />
+  <PackageReference Include="DotNetEnv" Version="3.1.1" />
+  <PackageReference Include="MediatR" Version="13.0.0" />
+  <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.8" />
+  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.8" />
+  <PackageReference Include="Telegram.Bot" Version="16.0.0" />
+</ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace>BSC_0909.Infrastructure</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>BSC_0909.Controller</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.3" />
+  </ItemGroup>
+
+   <ItemGroup>
+    <ProjectReference Include="..\BSC-0909.Application\BSC-0909.Application.csproj" />
+    <ProjectReference Include="..\BSC-0909.Infrastructure\BSC-0909.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
