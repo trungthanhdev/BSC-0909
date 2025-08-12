@@ -24,8 +24,9 @@ namespace BSC_0909.Infrastructure.Services
         private readonly BinanceSocketClient? _binanceClient;
         private readonly ILogger<BinanceService> _logger;
         private UpdateSubscription? _subscription;
+        private readonly IRabbitMQPublisher _publisher;
         private readonly IServiceScopeFactory _scopeFactory;
-        public BinanceService(IRepositoryDefinition<CryptoCurrencyEntity> cceRepo, ILogger<BinanceService> logger, IServiceScopeFactory scopeFactory)
+        public BinanceService(IRepositoryDefinition<CryptoCurrencyEntity> cceRepo, ILogger<BinanceService> logger, IServiceScopeFactory scopeFactory, IRabbitMQPublisher publisher)
         {
             _binanceClient = new BinanceSocketClient(opts =>
             {
@@ -34,6 +35,7 @@ namespace BSC_0909.Infrastructure.Services
             _cceRepo = cceRepo;
             _logger = logger;
             _scopeFactory = scopeFactory;
+            _publisher = publisher;
         }
         public async Task StartKlineStreamAsync(bool is_H1, string symbol = "BTCUSDT", KlineInterval tf = KlineInterval.FiveMinutes, CancellationToken ct = default)
         {
@@ -59,33 +61,11 @@ namespace BSC_0909.Infrastructure.Services
 
                     if (is_H1 == false)
                     {
-                        var newData = CryptoCurrencyEntity.Create(obj);
-                        var repo = scope.ServiceProvider.GetRequiredService<IRepositoryDefinition<CryptoCurrencyEntity>>();
-                        repo.Add(newData);
-                        if (await uow.SaveChangeAsync(ct) > 0)
-                        {
-                            _logger.LogInformation("Save successfully!");
-                        }
-                        else
-                        {
-                            _logger.LogError("Can not save!");
-                        }
+                        await _publisher.PublishAsync(obj, false);
                     }
                     else
                     {
-                        try { await Task.Delay(TimeSpan.FromSeconds(3), ct); }
-                        catch (TaskCanceledException) { return; }
-                        var newData = CryptoCurrencyH1Entity.Create(obj);
-                        var repo = scope.ServiceProvider.GetRequiredService<IRepositoryDefinition<CryptoCurrencyH1Entity>>();
-                        repo.Add(newData);
-                        if (await uow.SaveChangeAsync(ct) > 0)
-                        {
-                            _logger.LogInformation("Save successfully!");
-                        }
-                        else
-                        {
-                            _logger.LogError("Can not save!");
-                        }
+                        await _publisher.PublishAsync(obj, true);
                     }
                     // TODO: tính tín hiệu của bạn tại đây (EMA/RSI/…)
                     // TODO: gửi Telegram nếu cần

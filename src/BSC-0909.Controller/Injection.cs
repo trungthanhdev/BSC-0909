@@ -21,10 +21,10 @@ namespace BSC_0909.Controller
                         .AllowCredentials();
                 }));
         }
-        public static void AddInjection(this IServiceCollection services, IConfiguration configuration)
+        public static async Task AddInjection(this IServiceCollection services, IConfiguration configuration)
         {
             services.InjectApplication();
-            services.AddInfrastructure(configuration);
+            await services.AddInfrastructure(configuration);
             services.AddCorsConfig();
         }
     }

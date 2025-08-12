@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Binance.Net.Enums;
+using BSC_0909.Contract.Dtos.Request;
+using BSC_0909.Domain.Interfaces;
 using BSC_0909.Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -14,13 +16,17 @@ namespace BSC_0909.Infrastructure.Background
     {
         private readonly ILogger<BinanceHostedService> _logger;
         private readonly IServiceScopeFactory _scopeFactory;
-        public BinanceHostedService(ILogger<BinanceHostedService> logger, IServiceScopeFactory scopeFactory)
+        private readonly IRabbitMQPublisher _publisher;
+        public BinanceHostedService(ILogger<BinanceHostedService> logger, IServiceScopeFactory scopeFactory, IRabbitMQPublisher publisher)
         {
             _logger = logger;
             _scopeFactory = scopeFactory;
+            _publisher = publisher;
         }
         public async Task StartAsync(CancellationToken cancellationToken)
         {
+            // var dto = new ReqSaveCurrentCurrencyInforDto { };
+            // await _publisher.PublishAsync(dto);
             using var scope = _scopeFactory.CreateScope();
             var binanceService = scope.ServiceProvider.GetRequiredService<BinanceService>();
 

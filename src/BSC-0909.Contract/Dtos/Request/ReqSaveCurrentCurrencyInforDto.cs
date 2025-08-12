@@ -13,6 +13,7 @@ namespace BSC_0909.Contract.Dtos.Request
         public decimal LowPrice { get; set; }
         public decimal ClosePrice { get; set; }
         public DateTimeOffset timeStamp { get; set; }
+        public bool? is_H1 { get; set; }
 
     }
 }
