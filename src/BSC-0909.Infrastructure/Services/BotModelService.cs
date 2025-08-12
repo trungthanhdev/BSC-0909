@@ -35,8 +35,8 @@ namespace BSC_0909.Domain.Services.Bot
                     sb.Append(line);
             }
             string response = sb.ToString();
-            System.Console.WriteLine($"Response: {response}");
-            System.Console.WriteLine("Gui tin nhan thanh cong");
+            // System.Console.WriteLine($"Response: {response}");
+            // System.Console.WriteLine("Gui tin nhan thanh cong");
         }
     }
 }
