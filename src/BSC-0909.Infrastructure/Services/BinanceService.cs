@@ -20,22 +20,24 @@ namespace BSC_0909.Infrastructure.Services
     {
         private readonly string BinanceAPIKey = Environment.GetEnvironmentVariable("BINANCE_API_KEY") ?? throw new InvalidOperationException("BinanceAPIKey not found!");
         private readonly string BinanceAPISecret = Environment.GetEnvironmentVariable("BINANCE_SECRET_KEY") ?? throw new InvalidOperationException("BinanceAPISecret not found!");
-        private readonly IRepositoryDefinition<CryptoCurrencyEntity>? _cceRepo;
+        // private readonly IRepositoryDefinition<CryptoCurrencyEntity>? _cceRepo;
         private readonly BinanceSocketClient? _binanceClient;
+        private readonly IRSI _rsi;
         private readonly ILogger<BinanceService> _logger;
         private UpdateSubscription? _subscription;
         private readonly IRabbitMQPublisher _publisher;
-        private readonly IServiceScopeFactory _scopeFactory;
-        public BinanceService(IRepositoryDefinition<CryptoCurrencyEntity> cceRepo, ILogger<BinanceService> logger, IServiceScopeFactory scopeFactory, IRabbitMQPublisher publisher)
+        // private readonly IServiceScopeFactory _scopeFactory;
+        public BinanceService(ILogger<BinanceService> logger, IRabbitMQPublisher publisher, IRSI rsi)
         {
             _binanceClient = new BinanceSocketClient(opts =>
             {
                 opts.ReconnectInterval = TimeSpan.FromSeconds(1);
             });
-            _cceRepo = cceRepo;
+            // _cceRepo = cceRepo;
             _logger = logger;
-            _scopeFactory = scopeFactory;
+            // _scopeFactory = scopeFactory;
             _publisher = publisher;
+            _rsi = rsi;
         }
         public async Task StartKlineStreamAsync(bool is_H1, string symbol = "BTCUSDT", KlineInterval tf = KlineInterval.FiveMinutes, CancellationToken ct = default)
         {
@@ -56,19 +58,21 @@ namespace BSC_0909.Infrastructure.Services
                         timeStamp = dto.CloseTime
                     };
 
-                    using var scope = _scopeFactory.CreateScope();
-                    var uow = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+                    // using var scope = _scopeFactory.CreateScope();
+                    // var uow = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
 
                     if (is_H1 == false)
                     {
+                        // TODO: tính tín hiệu của bạn tại đây (EMA/RSI/…)
+                        // TODO: gửi Telegram nếu cần
                         await _publisher.PublishAsync(obj, false);
+                        // _rsi.CaculateRSI()
                     }
                     else
                     {
                         await _publisher.PublishAsync(obj, true);
                     }
-                    // TODO: tính tín hiệu của bạn tại đây (EMA/RSI/…)
-                    // TODO: gửi Telegram nếu cần
+
                 }
             });
 

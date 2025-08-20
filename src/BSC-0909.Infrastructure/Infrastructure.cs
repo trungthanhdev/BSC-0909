@@ -28,7 +28,7 @@ public static class Infrastructure
             options.UseNpgsql(connectionString));
         services.AddScoped(typeof(IRepositoryDefinition<>), typeof(RepositoryDefinition<>));
         services.AddScoped<IUnitOfWork, UnitOfWork<AppDbContext>>();
-        services.AddScoped<BinanceService>();
+        services.AddSingleton<BinanceService>();
         services.AddHostedService<BinanceHostedService>();
         services.AddHostedService<BinanceHostedServiceH1>();
 
